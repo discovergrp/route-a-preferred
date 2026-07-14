@@ -1121,6 +1121,23 @@ function recalculate() {
 
 function renderInstallmentPreview(total, travelDateId) {
   const previewEl = document.getElementById('installment-preview');
+  
+  // Show downpayment info
+  if (selectedPayment === 'downpayment') {
+    previewEl.style.display = 'block';
+    const count = parseInt(document.getElementById('travelersCount').value || '1');
+    const perHead = total / count;
+    const downPayment = 50000;
+    const balance = perHead - downPayment;
+    let html = `<h4>💳 Down Payment Scheme</h4>`;
+    html += `<div class="note">Secure your slot with ₱50,000 down payment per head. The remaining balance will be due upon release of your visa result.</div>`;
+    html += `<div class="installment-row"><span class="date">Down Payment (per head)</span><span class="amount">${formatPHP(downPayment)}</span></div>`;
+    html += `<div class="installment-row"><span class="date">Balance (per head) — due upon visa approval</span><span class="amount">${formatPHP(balance)}</span></div>`;
+    html += `<div class="installment-row total"><span class="date">Total per head</span><span class="amount">${formatPHP(perHead)}</span></div>`;
+    previewEl.innerHTML = html;
+    return;
+  }
+  
   if (selectedPayment !== 'installment') {
     previewEl.style.display = 'none';
     return;
