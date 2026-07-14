@@ -1164,9 +1164,9 @@ function renderInstallmentPreview(total, travelDateId) {
   const deadline = new Date(travelStart);
   deadline.setMonth(deadline.getMonth() - 3);
   
-  // Calculate months from now until deadline
+  // First payment starts July 15, 2026
   const now = new Date();
-  const startMonth = new Date(now.getFullYear(), now.getMonth() + 1, 15); // Next month 15th
+  const startMonth = new Date(2026, 6, 15); // July 15, 2026
   let months = 0;
   let checkDate = new Date(startMonth);
   while (checkDate <= deadline) {
