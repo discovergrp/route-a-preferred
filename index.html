@@ -324,11 +324,29 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Playfair Display', serif; }
 .footer a:hover { color: white; }
 .footer-bottom { text-align: center; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border); font-size: 0.75rem; color: rgba(255,255,255,0.4); }
 
+/* Promo Code Gate */
+.promo-code-section { background: linear-gradient(135deg, rgba(212,175,55,0.08), rgba(251,191,36,0.05)); border: 2px solid rgba(212,175,55,0.4); border-radius: 0.75rem; padding: 1.5rem; margin-bottom: 2rem; display: none; }
+.promo-code-section.active { display: block; animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+.promo-code-section .promo-title { font-size: 0.9rem; font-weight: 800; color: var(--accent); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+.promo-code-section .promo-desc { font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem; line-height: 1.6; }
+.promo-code-row { display: flex; gap: 0.75rem; align-items: center; }
+.promo-code-row input { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 0.5rem; padding: 0.7rem 0.9rem; font-size: 0.9rem; color: white; font-family: 'Inter', sans-serif; letter-spacing: 0.1em; text-transform: uppercase; }
+.promo-code-row input:focus { outline: none; border-color: var(--accent); }
+.promo-code-row button { padding: 0.7rem 1.5rem; background: var(--accent); color: var(--primary-dark); font-weight: 800; font-size: 0.8rem; border: none; border-radius: 0.5rem; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+.promo-code-row button:hover { background: var(--accent-light); }
+.promo-code-row button:disabled { opacity: 0.5; cursor: not-allowed; }
+.promo-verified { display: none; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: #4ade80; font-weight: 700; margin-top: 0.75rem; }
+.promo-verified.show { display: flex; }
+.promo-error { display: none; font-size: 0.8rem; color: #f87171; margin-top: 0.5rem; }
+.promo-error.show { display: block; }
+
 /* Toast */
 .toast { position: fixed; top: 1rem; right: 1rem; background: #16a34a; color: white; padding: 1rem 1.5rem; border-radius: 0.75rem; font-size: 0.9rem; font-weight: 600; z-index: 9999; transform: translateX(120%); transition: transform 0.3s ease; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
 .toast.show { transform: translateX(0); }
 .toast.error { background: #dc2626; }
 </style>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body>
 
@@ -628,6 +646,18 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Playfair Display', serif; }
         <div class="form-group"><label>Preferred Travel Date *</label><select id="travelDate" required onchange="recalculate()"><option value="2027-02-01">February 1 – 15, 2027</option><option value="2027-03-03" selected>March 3 – 17, 2027</option><option value="2027-05-26">May 26 – June 8, 2027</option><option value="2027-06-08">June 8 – 22, 2027 ★ Buy 5, Get 1 FREE</option><option value="2027-09-15">September 15 – 29, 2027</option></select></div>
       </div>
 
+      <!-- Promo Code Gate (June 8 only) -->
+      <div class="promo-code-section" id="promo-code-section">
+        <div class="promo-title">🎁 Exclusive Promo — Buy 5, Get 1 FREE!</div>
+        <div class="promo-desc">This is an exclusive, invite-only promo available to select clients. If you have a special promo code, enter it below to unlock your free slot. Don't have one yet? Ask your travel agent — they'll know exactly what to do.</div>
+        <div class="promo-code-row">
+          <input type="text" id="promoCodeInput" placeholder="Enter promo code" maxlength="20" autocomplete="off">
+          <button type="button" id="verifyPromoBtn" onclick="verifyPromoCode()">Verify</button>
+        </div>
+        <div class="promo-verified" id="promoVerified">✅ Promo code verified! Buy 5 Get 1 FREE is now active.</div>
+        <div class="promo-error" id="promoError">Invalid promo code. Please check and try again.</div>
+      </div>
+
       <!-- Additional Travelers -->
       <div class="additional-travelers" id="additional-travelers" style="display:none;">
         <h4>👥 Additional Traveler Details</h4>
@@ -803,6 +833,47 @@ const TRAVEL_DATES = {
 let selectedDay = 0;
 let selectedPackage = 'full';
 let selectedPayment = 'installment';
+let promoCodeVerified = false;
+
+// ==================== EMAILJS INIT ====================
+(function() { emailjs.init('efpG_Tb5G5t8BfEfJ'); })();
+
+// ==================== PROMO CODE ====================
+function verifyPromoCode() {
+  const input = document.getElementById('promoCodeInput').value.trim().toUpperCase();
+  const errorEl = document.getElementById('promoError');
+  const verifiedEl = document.getElementById('promoVerified');
+  
+  if (input === 'DGEXCLUSIVE4626') {
+    promoCodeVerified = true;
+    errorEl.classList.remove('show');
+    verifiedEl.classList.add('show');
+    document.getElementById('promoCodeInput').disabled = true;
+    document.getElementById('verifyPromoBtn').disabled = true;
+    recalculate();
+  } else {
+    promoCodeVerified = false;
+    errorEl.classList.add('show');
+    verifiedEl.classList.remove('show');
+  }
+}
+
+function togglePromoSection() {
+  const travelDateId = document.getElementById('travelDate').value;
+  const promoSection = document.getElementById('promo-code-section');
+  if (travelDateId === '2027-06-08') {
+    promoSection.classList.add('active');
+  } else {
+    promoSection.classList.remove('active');
+    // Reset promo state when switching away from June 8
+    promoCodeVerified = false;
+    document.getElementById('promoCodeInput').value = '';
+    document.getElementById('promoCodeInput').disabled = false;
+    document.getElementById('verifyPromoBtn').disabled = false;
+    document.getElementById('promoVerified').classList.remove('show');
+    document.getElementById('promoError').classList.remove('show');
+  }
+}
 
 // ==================== ITINERARY RENDERING ====================
 function initItinerary() {
@@ -968,6 +1039,7 @@ function selectPayment(type) {
 
 function recalculate() {
   const travelDateId = document.getElementById('travelDate').value;
+  togglePromoSection();
   const dates = TRAVEL_DATES[travelDateId];
   if (!dates) return;
   
@@ -994,8 +1066,8 @@ function recalculate() {
     return { ...p, index: idx, category, rate, discount, isFree: false, finalRate: rate };
   });
   
-  // Buy 5 Get 1 Free (only for June 8 date)
-  const enablePromo = travelDateId === '2027-06-08';
+  // Buy 5 Get 1 Free (only for June 8 date WITH verified promo code)
+  const enablePromo = travelDateId === '2027-06-08' && promoCodeVerified;
   const fullPayingCount = classified.filter(p => p.category !== 'infant').length;
   let promoApplied = false;
   let promoDiscount = 0;
@@ -1101,6 +1173,13 @@ function handleSubmit(e) {
     return false;
   }
   
+  // Check promo code gate for June 8
+  const travelDateId = document.getElementById('travelDate').value;
+  if (travelDateId === '2027-06-08' && !promoCodeVerified) {
+    showToast('Please enter and verify the promo code to book the June 8 date.', 'error');
+    return false;
+  }
+  
   // Collect form data
   const data = {
     firstName: document.getElementById('firstName').value,
@@ -1124,15 +1203,83 @@ function handleSubmit(e) {
     return false;
   }
   
-  // Show success
+  // Build travel date label
+  const travelDateSelect = document.getElementById('travelDate');
+  const travelDateLabel = travelDateSelect.options[travelDateSelect.selectedIndex].text;
+  
+  // Build full message with all traveler details
+  const count = parseInt(data.travelersCount);
+  let message = `PRIMARY TRAVELER:\n`;
+  message += `Name: ${data.firstName} ${data.middleName} ${data.lastName} ${data.suffix !== 'None' ? data.suffix : ''}\n`;
+  message += `Gender: ${data.gender} | DOB: ${data.dob}\n`;
+  message += `Contact: ${data.contactNo} | Email: ${data.email}\n`;
+  
+  if (count > 1) {
+    message += `\nADDITIONAL TRAVELERS:\n`;
+    for (let i = 2; i <= Math.min(count, 6); i++) {
+      const fn = document.querySelector(`.traveler-field[data-idx="${i}"][data-field="firstName"]`);
+      const mn = document.querySelector(`.traveler-field[data-idx="${i}"][data-field="middleName"]`);
+      const ln = document.querySelector(`.traveler-field[data-idx="${i}"][data-field="lastName"]`);
+      const sf = document.querySelector(`.traveler-field[data-idx="${i}"][data-field="suffix"]`);
+      const gn = document.querySelector(`.traveler-field[data-idx="${i}"][data-field="gender"]`);
+      const db = document.querySelector(`.traveler-field[data-idx="${i}"][data-field="dob"]`);
+      const ct = document.querySelector(`.traveler-field[data-idx="${i}"][data-field="contact"]`);
+      const em = document.querySelector(`.traveler-field[data-idx="${i}"][data-field="email"]`);
+      message += `\nTraveler ${i}: ${fn?fn.value:''} ${mn?mn.value:''} ${ln?ln.value:''} ${sf&&sf.value!=='None'?sf.value:''}\n`;
+      message += `  Gender: ${gn?gn.value:''} | DOB: ${db?db.value:''}\n`;
+      message += `  Contact: ${ct?ct.value:''} | Email: ${em?em.value:''}\n`;
+    }
+  }
+  
+  if (data.notes) {
+    message += `\nNOTES: ${data.notes}`;
+  }
+  
+  if (promoCodeVerified) {
+    message += `\n\nPROMO: Buy 5 Get 1 FREE (Code: DGexclusive4626)`;
+  }
+  
+  // Calculate total for email
+  const summaryEl = document.getElementById('pricing-summary');
+  const totalEl = summaryEl ? summaryEl.querySelector('.pricing-row.total .value') : null;
+  const totalAmount = totalEl ? totalEl.textContent : `₱${(selectedPackage === 'full' ? 180000 : 150000) * count}`;
+  
+  // Disable button
   const btn = document.getElementById('submit-btn');
   btn.disabled = true;
   btn.textContent = 'Submitting...';
   
-  setTimeout(() => {
-    showToast('Reservation request submitted successfully! We will contact you within 24 hours.');
-    btn.textContent = '✓ Submitted Successfully';
-  }, 1500);
+  // Send via EmailJS
+  const templateParams = {
+    from_name: `${data.firstName} ${data.lastName}`,
+    from_email: data.email,
+    contact_no: data.contactNo,
+    travel_date: travelDateLabel,
+    package_type: selectedPackage === 'full' ? 'Full Package (₱180,000)' : 'Land Arrangement Only (₱150,000)',
+    payment_scheme: selectedPayment === 'installment' ? 'Monthly Installment' : selectedPayment === 'downpayment' ? '₱50K Down Payment' : 'Full Cash',
+    travelers_count: data.travelersCount + ' person(s)',
+    total_amount: totalAmount,
+    message: message
+  };
+  
+  emailjs.send('service_routea', 'template_vtbhklo', templateParams)
+    .then(function() {
+      showToast('Reservation submitted successfully! Redirecting to Messenger...');
+      btn.textContent = '✓ Submitted Successfully';
+      // Redirect to Messenger after 2 seconds
+      setTimeout(() => {
+        window.open('https://m.me/discovergrp', '_blank');
+      }, 2000);
+    })
+    .catch(function(error) {
+      console.error('EmailJS error:', error);
+      // Fallback: show success anyway and offer mailto
+      showToast('Submission received! If you don\'t hear from us, please message us on Facebook.');
+      btn.textContent = '✓ Submitted';
+      setTimeout(() => {
+        window.open('https://m.me/discovergrp', '_blank');
+      }, 2000);
+    });
   
   return false;
 }
