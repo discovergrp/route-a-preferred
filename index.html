@@ -207,7 +207,7 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Playfair Display', serif; }
 .pricing h2 { font-size: clamp(1.8rem, 4vw, 2.5rem); color: var(--primary); margin-bottom: 0.75rem; }
 .pricing .section-sub { color: #6b7a94; font-size: 0.95rem; max-width: 600px; margin: 0 auto 3rem; }
 .pricing-card { background: white; border-radius: 1.5rem; overflow: visible; box-shadow: 0 4px 30px rgba(0,0,0,0.08); border: 1px solid #e8edf5; max-width: 1000px; margin: 1.5rem auto 0; }
-.pricing-header { display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; border-bottom: 1px solid #e8edf5; }
+.pricing-header { display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; border-bottom: 1px solid #e8edf5; position: relative; }
 .pricing-header-intro { padding: 2rem 1.5rem; text-align: left; display: flex; flex-direction: column; justify-content: center; }
 .pricing-header-intro h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--primary); margin-bottom: 0.5rem; }
 .pricing-header-intro p { font-size: 0.85rem; color: #6b7a94; line-height: 1.5; }
@@ -493,8 +493,8 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Playfair Display', serif; }
         <div class="col-sub">Divided equally</div>
         <a href="#reservation-form" class="view-schedule-btn dark">View Schedule</a>
       </div>
-      <div class="pricing-header-col best-seller-col" style="position:relative;border-left:2px solid rgba(245,158,11,0.5);border-right:2px solid rgba(245,158,11,0.5);background:rgba(245,158,11,0.03);">
-        <span class="col-badge" style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);font-size:0.6rem;padding:0.3rem 0.8rem;white-space:nowrap;z-index:2;">⭐ BEST SELLER</span>
+      <div class="pricing-header-col best-seller-col" style="position:relative;border-left:2px solid rgba(245,158,11,0.5);border-right:2px solid rgba(245,158,11,0.5);background:rgba(245,158,11,0.03);padding-top:2.5rem;">
+        <span class="col-badge" style="position:absolute;top:0.5rem;left:50%;transform:translateX(-50%);font-size:0.6rem;padding:0.3rem 0.8rem;white-space:nowrap;z-index:2;">⭐ BEST SELLER</span>
         <span class="col-sub-badge">DOWN PAYMENT</span>
         <div class="col-amount">₱50,000</div>
         <button class="view-schedule-btn gold" onclick="openModal('downpayment-modal')">View Schedule</button>
@@ -624,7 +624,7 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Playfair Display', serif; }
         <div class="form-group"><label>Email Address *</label><input type="email" id="email" placeholder="e.g. juan.delacruz@gmail.com" required></div>
       </div>
       <div class="form-grid-2">
-        <div class="form-group"><label>Number of Travelers</label><select id="travelersCount" onchange="updateTravelers()"><option value="1">1 Person</option><option value="2">2 Persons</option><option value="3">3 Persons</option><option value="4">4 Persons</option><option value="5">5 Persons</option><option value="6">6+ Persons</option></select></div>
+        <div class="form-group"><label>Number of Travelers</label><select id="travelersCount" onchange="updateTravelers()"><option value="1">1 Person</option><option value="2">2 Persons</option><option value="3">3 Persons</option><option value="4">4 Persons</option><option value="5">5 Persons</option><option value="6">6 Persons</option><option value="7">7 Persons</option><option value="8">8 Persons</option><option value="9">9 Persons</option><option value="10">10 Persons</option><option value="11">11 Persons</option><option value="12">12 Persons</option><option value="13">13 Persons</option><option value="14">14 Persons</option><option value="15">15 Persons</option><option value="16">16 Persons</option><option value="17">17 Persons</option><option value="18">18 Persons</option><option value="19">19 Persons</option><option value="20">20 Persons</option><option value="21">21 Persons</option><option value="22">22 Persons</option><option value="23">23 Persons</option><option value="24">24 Persons</option><option value="25">25 Persons</option><option value="26">26 Persons</option><option value="27">27 Persons</option><option value="28">28 Persons</option><option value="29">29 Persons</option><option value="30">30 Persons</option><option value="31">31 Persons</option><option value="32">32 Persons</option><option value="33">33 Persons</option><option value="34">34 Persons</option><option value="35">35 Persons</option><option value="36">36 Persons</option><option value="37">37 Persons</option><option value="38">38 Persons</option><option value="39">39 Persons</option><option value="40">40 Persons</option><option value="41">41 Persons</option><option value="42">42 Persons</option><option value="43">43 Persons</option><option value="44">44 Persons</option><option value="45">45 Persons</option></select></div>
         <div class="form-group"><label>Preferred Travel Date *</label><select id="travelDate" required onchange="recalculate()"><option value="2027-02-01">February 1 – 15, 2027</option><option value="2027-03-03" selected>March 3 – 17, 2027</option><option value="2027-05-26">May 26 – June 8, 2027</option><option value="2027-06-08">June 8 – 22, 2027 ★ Buy 5, Get 1 FREE</option><option value="2027-09-15">September 15 – 29, 2027</option></select></div>
       </div>
 
