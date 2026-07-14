@@ -1301,26 +1301,14 @@ function handleSubmit(e) {
     .then(res => res.json())
     .then(result => {
       if (result.success) {
-        showToast('Reservation submitted successfully! Redirecting to Messenger...');
-        btn.textContent = '✓ Submitted Successfully';
-        setTimeout(() => {
-          window.open('https://m.me/discovergrp', '_blank');
-        }, 2000);
+        showSuccessMessage();
       } else {
-        showToast('Submission received! Redirecting to Messenger...');
-        btn.textContent = '✓ Submitted';
-        setTimeout(() => {
-          window.open('https://m.me/discovergrp', '_blank');
-        }, 2000);
+        showSuccessMessage();
       }
     })
     .catch(function(error) {
       console.error('Web3Forms error:', error);
-      showToast('Submission received! If you don\'t hear from us, please message us on Facebook.');
-      btn.textContent = '✓ Submitted';
-      setTimeout(() => {
-        window.open('https://m.me/discovergrp', '_blank');
-      }, 2000);
+      showSuccessMessage();
     });
   
   return false;
@@ -1331,6 +1319,24 @@ function showToast(msg, type = 'success') {
   toast.textContent = msg;
   toast.className = 'toast show' + (type === 'error' ? ' error' : '');
   setTimeout(() => { toast.className = 'toast'; }, 4000);
+}
+
+function showSuccessMessage() {
+  const formEl = document.getElementById('reservation-form-el');
+  formEl.innerHTML = `
+    <div style="text-align:center; padding: 3rem 1.5rem;">
+      <div style="font-size: 4rem; margin-bottom: 1rem;">✅</div>
+      <h2 style="color: #fbbf24; font-size: 1.8rem; margin-bottom: 1rem; font-family: 'Playfair Display', serif;">Reservation Request Submitted!</h2>
+      <p style="color: #cbd5e1; font-size: 1.1rem; line-height: 1.7; max-width: 500px; margin: 0 auto;">
+        Thank you for your reservation request. One of our reservation officers will review your details and send you your <strong style="color: #fbbf24;">booking confirmation</strong> shortly.
+      </p>
+      <p style="color: #94a3b8; font-size: 0.95rem; margin-top: 1.5rem;">
+        Please check your email for updates. If you have any questions, feel free to message us on our Facebook page.
+      </p>
+      <a href="https://www.facebook.com/discovergrp" target="_blank" style="display: inline-block; margin-top: 1.5rem; padding: 0.75rem 2rem; background: linear-gradient(135deg, #1877f2, #0d5bbf); color: white; border-radius: 0.5rem; text-decoration: none; font-weight: 600; transition: transform 0.2s;">Message Us on Facebook</a>
+    </div>
+  `;
+  window.scrollTo({ top: formEl.offsetTop - 100, behavior: 'smooth' });
 }
 
 // ==================== INIT ====================
