@@ -69,6 +69,71 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Playfair Display', serif; }
 .promo-banner .promo-highlight .gold { color: transparent; background: var(--accent-gradient); -webkit-background-clip: text; background-clip: text; font-weight: 800; }
 .promo-banner .promo-value { font-size: 0.9rem; color: var(--accent); font-weight: 600; }
 .promo-banner .promo-note { font-size: 0.8rem; color: var(--muted); font-style: italic; margin-top: 0.5rem; }
+.promo-banner .old-promo { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 0.5rem; padding: 0.75rem; text-align: center; margin-bottom: 1.5rem; }
+.promo-banner .old-promo .strikethrough { text-decoration: line-through; color: rgba(255,255,255,0.5); font-size: 0.85rem; }
+.promo-banner .old-promo .ended { font-size: 0.75rem; color: rgba(255,255,255,0.4); margin-top: 0.25rem; }
+.promo-banner .countdown-label { display: flex; align-items: center; justify-content: center; gap: 0.5rem; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 1rem; }
+.promo-banner .countdown-label span { background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.countdown-boxes { display: flex; align-items: center; justify-content: center; gap: 0.75rem; margin-bottom: 1.5rem; }
+.countdown-box { display: flex; flex-direction: column; align-items: center; }
+.countdown-box .cd-value { width: 60px; height: 60px; border-radius: 0.5rem; border: 1.5px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 900; font-family: 'Inter', monospace; color: white; }
+.countdown-box.highlight .cd-value { background: rgba(255,255,255,0.1); color: #fbbf24; }
+.countdown-box .cd-label { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.5); margin-top: 0.3rem; }
+.promo-banner .lock-text { font-size: 0.8rem; color: rgba(255,255,255,0.6); margin-bottom: 1rem; }
+
+/* Inclusions Section */
+.inclusions-section { background: white; padding: 5rem 1.5rem; color: var(--text-dark); }
+.inclusions-header { background: var(--primary); padding: 3rem 1.5rem; text-align: center; border-radius: 1rem; margin-bottom: 3rem; position: relative; overflow: hidden; }
+.inclusions-header::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background: var(--accent); }
+.inclusions-header .section-badge { display: inline-block; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; background: rgba(255,255,255,0.15); color: white; padding: 0.4rem 1rem; border-radius: 2rem; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.2); }
+.inclusions-header h2 { font-size: clamp(1.8rem, 4vw, 2.5rem); color: white; font-style: italic; margin-bottom: 0.5rem; }
+.inclusions-header p { color: rgba(255,255,255,0.7); font-size: 0.9rem; }
+.inclusions-content { max-width: 800px; margin: 0 auto; }
+.inclusions-block { margin-bottom: 3rem; }
+.inclusions-block h3 { font-size: 0.85rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; font-family: 'Inter', sans-serif; }
+.inclusions-block h3.green { color: #16a34a; }
+.inclusions-block h3.red { color: #dc2626; }
+.inclusions-block h3.blue { color: var(--primary); }
+.inclusions-list { background: #f8fffe; border: 1px solid #d1fae5; border-radius: 1rem; padding: 1.5rem 2rem; }
+.exclusions-list { background: #fef2f2; border: 1px solid #fecaca; border-radius: 1rem; padding: 1.5rem 2rem; }
+.optionals-list { background: #f0f4ff; border: 1px solid #dbeafe; border-radius: 1rem; padding: 1.5rem 2rem; }
+.list-item { display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.6rem 0; font-size: 0.9rem; color: #374151; }
+.list-item .icon { font-size: 0.85rem; margin-top: 2px; flex-shrink: 0; }
+.list-item .icon.green { color: #16a34a; }
+.list-item .icon.red { color: #dc2626; }
+.list-item .icon.blue { color: var(--primary); }
+.inclusions-cta { text-align: center; margin-top: 2rem; }
+.inclusions-cta .btn { padding: 0.8rem 2rem; font-size: 0.9rem; border-radius: 2rem; }
+
+/* Modals */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 9999; align-items: center; justify-content: center; padding: 1rem; }
+.modal-overlay.active { display: flex; }
+.modal-content { background: white; border-radius: 1.5rem; padding: 2rem; max-width: 420px; width: 100%; color: var(--text-dark); position: relative; max-height: 90vh; overflow-y: auto; }
+.modal-close { position: absolute; top: 1rem; right: 1rem; background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #6b7a94; }
+.modal-icon { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.5rem; }
+.modal-icon.blue { background: rgba(10,30,94,0.1); }
+.modal-icon.gold { background: rgba(245,158,11,0.1); }
+.modal-title { text-align: center; font-size: 1.5rem; font-weight: 900; color: var(--primary); margin-bottom: 0.25rem; }
+.modal-subtitle { text-align: center; font-size: 0.8rem; color: #6b7a94; margin-bottom: 1.5rem; }
+.modal-card { border-radius: 0.75rem; padding: 1.25rem; margin-bottom: 1rem; }
+.modal-card.blue { background: rgba(10,30,94,0.03); border: 1px solid rgba(10,30,94,0.15); }
+.modal-card.gold { background: rgba(245,158,11,0.03); border: 1px solid rgba(245,158,11,0.15); }
+.modal-card .step-row { display: flex; align-items: flex-start; gap: 0.75rem; }
+.modal-card .step-num { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+.modal-card .step-num.gold { background: rgba(245,158,11,0.2); color: #92400e; }
+.modal-card .step-label { font-size: 0.75rem; font-weight: 700; color: var(--primary); }
+.modal-card .step-amount { font-size: 1.2rem; font-weight: 900; margin: 0.25rem 0; }
+.modal-card .step-amount.gold { color: #d97706; }
+.modal-card .step-amount.blue { color: var(--primary); }
+.modal-card .step-desc { font-size: 0.75rem; color: #6b7a94; line-height: 1.5; }
+.modal-card .step-note { font-size: 0.7rem; color: #d97706; font-weight: 700; background: rgba(245,158,11,0.05); border: 1px solid rgba(245,158,11,0.1); padding: 0.4rem 0.6rem; border-radius: 0.4rem; margin-top: 0.5rem; }
+.modal-card .check-note { display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; font-weight: 700; color: var(--primary); background: rgba(10,30,94,0.05); padding: 0.5rem 0.75rem; border-radius: 0.5rem; border: 1px solid rgba(10,30,94,0.1); margin-top: 0.75rem; }
+.modal-card .divider { height: 1px; background: rgba(245,158,11,0.1); margin: 1rem 0; }
+.modal-note { font-size: 0.7rem; color: #6b7a94; font-style: italic; text-align: center; margin-bottom: 1rem; }
+.modal-btn { width: 100%; padding: 0.75rem; border: none; border-radius: 0.75rem; font-size: 0.85rem; font-weight: 700; cursor: pointer; color: white; transition: all 0.2s; }
+.modal-btn.blue { background: var(--primary); }
+.modal-btn.gold { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.modal-btn:hover { opacity: 0.9; transform: translateY(-1px); }
 
 /* Stats Row */
 .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; max-width: 800px; margin: 2rem auto; }
@@ -141,14 +206,41 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Playfair Display', serif; }
 .pricing .section-badge { display: inline-block; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; background: var(--primary); color: white; padding: 0.4rem 1rem; border-radius: 2rem; margin-bottom: 1rem; }
 .pricing h2 { font-size: clamp(1.8rem, 4vw, 2.5rem); color: var(--primary); margin-bottom: 0.75rem; }
 .pricing .section-sub { color: #6b7a94; font-size: 0.95rem; max-width: 600px; margin: 0 auto 3rem; }
-.pricing-table { width: 100%; border-collapse: collapse; background: white; border-radius: 1rem; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
-.pricing-table th, .pricing-table td { padding: 1rem; text-align: center; font-size: 0.85rem; border-bottom: 1px solid #f1f5f9; }
-.pricing-table th { background: var(--primary); color: white; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
-.pricing-table th.best-seller { background: var(--accent); color: var(--primary-dark); }
-.pricing-table td:first-child { text-align: left; font-weight: 600; color: var(--primary); }
-.pricing-table .check { color: #16a34a; font-weight: 700; }
-.pricing-table .discount { color: #dc2626; font-weight: 700; }
-.pricing-table .free { color: #16a34a; font-weight: 800; }
+.pricing-card { background: white; border-radius: 1.5rem; overflow: hidden; box-shadow: 0 4px 30px rgba(0,0,0,0.08); border: 1px solid #e8edf5; max-width: 1000px; margin: 0 auto; }
+.pricing-header { display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; border-bottom: 1px solid #e8edf5; }
+.pricing-header-intro { padding: 2rem 1.5rem; text-align: left; display: flex; flex-direction: column; justify-content: center; }
+.pricing-header-intro h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--primary); margin-bottom: 0.5rem; }
+.pricing-header-intro p { font-size: 0.85rem; color: #6b7a94; line-height: 1.5; }
+.pricing-header-col { padding: 1.5rem 1rem; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; border-left: 1px solid #e8edf5; }
+.pricing-header-col .col-badge { font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; padding: 0.25rem 0.75rem; border-radius: 1rem; border: 1.5px solid var(--primary); color: var(--primary); }
+.pricing-header-col.best-seller-col .col-badge { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; border: none; }
+.pricing-header-col.best-seller-col .col-sub-badge { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.2rem 0.6rem; border-radius: 0.5rem; background: #fef3c7; color: #92400e; }
+.pricing-header-col .col-amount { font-size: 1.8rem; font-weight: 900; color: var(--primary); font-family: 'Inter', sans-serif; }
+.pricing-header-col.best-seller-col .col-amount { color: #d97706; }
+.pricing-header-col .col-sub { font-size: 0.75rem; color: #6b7a94; font-style: italic; }
+.pricing-header-col .view-schedule-btn { display: inline-block; padding: 0.5rem 1.2rem; border-radius: 0.5rem; font-size: 0.75rem; font-weight: 700; cursor: pointer; text-decoration: none; transition: all 0.2s; margin-top: 0.3rem; }
+.pricing-header-col .view-schedule-btn.dark { background: var(--primary); color: white; }
+.pricing-header-col .view-schedule-btn.gold { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; }
+.pricing-header-col .view-schedule-btn:hover { transform: scale(0.97); opacity: 0.9; }
+.pricing-rows { }
+.pricing-row-item { display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; border-bottom: 1px solid #f1f5f9; }
+.pricing-row-item:last-child { border-bottom: none; }
+.pricing-row-item .row-label { padding: 1rem 1.5rem; font-weight: 700; color: var(--primary); font-size: 0.9rem; display: flex; align-items: center; }
+.pricing-row-item .row-value { padding: 1rem; text-align: center; font-size: 0.85rem; color: #4a5568; display: flex; align-items: center; justify-content: center; border-left: 1px solid #f1f5f9; }
+.pricing-row-item .row-value .check-badge { color: #2563eb; font-weight: 700; font-size: 0.85rem; }
+.pricing-row-item .row-value .discount-badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 0.4rem; font-size: 0.75rem; font-weight: 700; border: 1.5px solid #d97706; color: #d97706; }
+.pricing-row-item .row-value .free-badge { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 0.4rem; font-size: 0.75rem; font-weight: 700; border: 1.5px solid #dc2626; color: #dc2626; }
+.pricing-view-link { text-align: center; padding: 2rem; border-top: 1px solid #e8edf5; }
+.pricing-view-link a { color: var(--primary); font-weight: 600; font-size: 0.9rem; text-decoration: none; border-bottom: 1.5px solid var(--primary); padding-bottom: 2px; }
+.pricing-view-link a:hover { color: var(--primary-light); border-color: var(--primary-light); }
+@media(max-width:768px) {
+  .pricing-header { grid-template-columns: 1fr; }
+  .pricing-header-intro { text-align: center; border-bottom: 1px solid #e8edf5; }
+  .pricing-header-col { border-left: none; border-bottom: 1px solid #e8edf5; }
+  .pricing-row-item { grid-template-columns: 1fr; }
+  .pricing-row-item .row-label { border-bottom: none; padding-bottom: 0.25rem; justify-content: center; }
+  .pricing-row-item .row-value { border-left: none; padding-top: 0.25rem; }
+}
 
 /* Reservation Form */
 .reservation { background: var(--primary); padding: 5rem 1.5rem; }
@@ -272,6 +364,22 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Playfair Display', serif; }
 
   <!-- Promo Banner -->
   <div class="promo-banner">
+    <div class="old-promo">
+      <div class="strikethrough">Buy 5, Get 1 FREE Promo</div>
+      <div class="ended">This promo has ended as of June 30, 2026.</div>
+    </div>
+
+    <div class="countdown-label">🕐 <span>PROMO ENDS ON JULY 18, 2026</span></div>
+
+    <div class="countdown-boxes">
+      <div class="countdown-box"><div class="cd-value" id="cd-days">00</div><div class="cd-label">Days</div></div>
+      <div class="countdown-box"><div class="cd-value" id="cd-hours">00</div><div class="cd-label">Hours</div></div>
+      <div class="countdown-box"><div class="cd-value" id="cd-mins">00</div><div class="cd-label">Mins</div></div>
+      <div class="countdown-box highlight"><div class="cd-value" id="cd-secs">00</div><div class="cd-label">Secs</div></div>
+    </div>
+
+    <div class="lock-text">Lock in your slots before the countdown hits zero to guarantee current pricing & perks!</div>
+
     <div class="promo-title">Reserve your slot and get a</div>
     <div class="promo-highlight"><span class="gold">FREE 2-Night Optional Tour in Salerno & Amalfi Coast</span></div>
     <div class="promo-value">Worth ₱45,000/head!</div>
@@ -372,24 +480,124 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Playfair Display', serif; }
   <h2>Compare & Choose Your Ideal Plan</h2>
   <p class="section-sub">We believe luxury travel should be accessible. Choose from our three tailored payment options.</p>
 
-  <table class="pricing-table">
-    <thead>
-      <tr>
-        <th style="text-align:left;">Your Path to Europe</th>
-        <th>Monthly Installment</th>
-        <th class="best-seller">⭐ BEST SELLER<br>₱50K Down Payment</th>
-        <th>Full Cash</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr><td>Total Package Cost</td><td>₱180,000</td><td>₱180,000</td><td>₱180,000</td></tr>
-      <tr><td>Visa Denial Protection</td><td class="check">✓ 100% Refund</td><td class="check">✓ 100% Refund</td><td class="check">✓ 100% Refund</td></tr>
-      <tr><td>Visa Assistance & Appointment Fee</td><td>Standard Rate</td><td class="discount">50% OFF</td><td class="discount">50% OFF</td></tr>
-      <tr><td>Premium Travel Insurance</td><td>Standard Rate</td><td>Standard Rate</td><td class="discount">50% OFF</td></tr>
-      <tr><td>Taxes, Tipping & Permits</td><td>Standard Rate</td><td>Standard Rate</td><td class="discount">50% OFF</td></tr>
-      <tr><td>Philippine Travel Tax</td><td>Standard Rate</td><td>Standard Rate</td><td class="free">100% FREE</td></tr>
-    </tbody>
-  </table>
+  <div class="pricing-card">
+    <!-- Header Row -->
+    <div class="pricing-header">
+      <div class="pricing-header-intro">
+        <h3>Your Path to Europe</h3>
+        <p>Select the perfect option to comfortably fund your dream journey.</p>
+      </div>
+      <div class="pricing-header-col">
+        <span class="col-badge">MONTHLY</span>
+        <div class="col-amount">Monthly</div>
+        <div class="col-sub">Divided equally</div>
+        <a href="#reservation-form" class="view-schedule-btn dark">View Schedule</a>
+      </div>
+      <div class="pricing-header-col best-seller-col" style="position:relative;border-left:2px solid rgba(245,158,11,0.5);border-right:2px solid rgba(245,158,11,0.5);background:rgba(245,158,11,0.03);">
+        <span class="col-badge" style="position:absolute;top:-10px;left:50%;transform:translateX(-50);font-size:0.6rem;">⭐ BEST SELLER</span>
+        <span class="col-sub-badge">DOWN PAYMENT</span>
+        <div class="col-amount">₱50,000</div>
+        <button class="view-schedule-btn gold" onclick="openModal('downpayment-modal')">View Schedule</button>
+      </div>
+      <div class="pricing-header-col">
+        <span class="col-badge">FULL CASH</span>
+        <div class="col-amount">₱180,000</div>
+        <button class="view-schedule-btn dark" onclick="openModal('fullcash-modal')">View Schedule</button>
+      </div>
+    </div>
+    <!-- Comparison Rows -->
+    <div class="pricing-rows">
+      <div class="pricing-row-item">
+        <div class="row-label">Total Package Cost</div>
+        <div class="row-value" style="border-left:1px solid #e8edf5;"><strong style="color:var(--primary);">₱180,000</strong></div>
+        <div class="row-value" style="border-left:2px solid rgba(245,158,11,0.3);border-right:2px solid rgba(245,158,11,0.3);background:rgba(245,158,11,0.02);"><strong style="color:#d97706;">₱180,000</strong></div>
+        <div class="row-value" style="border-left:1px solid #e8edf5;"><strong style="color:var(--primary);">₱180,000</strong></div>
+      </div>
+      <div class="pricing-row-item">
+        <div class="row-label">Visa Denial Protection</div>
+        <div class="row-value" style="border-left:1px solid #e8edf5;"><span class="check-badge">✓ 100% Refund</span></div>
+        <div class="row-value" style="border-left:2px solid rgba(245,158,11,0.3);border-right:2px solid rgba(245,158,11,0.3);background:rgba(245,158,11,0.02);"><span class="check-badge" style="color:#d97706;">✓ 100% Refund</span></div>
+        <div class="row-value" style="border-left:1px solid #e8edf5;"><span class="check-badge">✓ 100% Refund</span></div>
+      </div>
+      <div class="pricing-row-item">
+        <div class="row-label">Visa Assistance & Appointment Fee</div>
+        <div class="row-value" style="border-left:1px solid #e8edf5;color:#6b7a94;">Standard Rate</div>
+        <div class="row-value" style="border-left:2px solid rgba(245,158,11,0.3);border-right:2px solid rgba(245,158,11,0.3);background:rgba(245,158,11,0.02);"><span class="discount-badge">50% OFF</span></div>
+        <div class="row-value" style="border-left:1px solid #e8edf5;"><span class="discount-badge" style="border-color:var(--primary);color:var(--primary);">50% OFF</span></div>
+      </div>
+      <div class="pricing-row-item">
+        <div class="row-label">Premium Travel Insurance</div>
+        <div class="row-value" style="border-left:1px solid #e8edf5;color:#6b7a94;">Standard Rate</div>
+        <div class="row-value" style="border-left:2px solid rgba(245,158,11,0.3);border-right:2px solid rgba(245,158,11,0.3);background:rgba(245,158,11,0.02);color:#6b7a94;">Standard Rate</div>
+        <div class="row-value" style="border-left:1px solid #e8edf5;"><span class="discount-badge" style="border-color:var(--primary);color:var(--primary);">50% OFF</span></div>
+      </div>
+      <div class="pricing-row-item">
+        <div class="row-label">Taxes, Tipping & Permits</div>
+        <div class="row-value" style="border-left:1px solid #e8edf5;color:#6b7a94;">Standard Rate</div>
+        <div class="row-value" style="border-left:2px solid rgba(245,158,11,0.3);border-right:2px solid rgba(245,158,11,0.3);background:rgba(245,158,11,0.02);color:#6b7a94;">Standard Rate</div>
+        <div class="row-value" style="border-left:1px solid #e8edf5;"><span class="discount-badge" style="border-color:var(--primary);color:var(--primary);">50% OFF</span></div>
+      </div>
+      <div class="pricing-row-item">
+        <div class="row-label">Philippine Travel Tax</div>
+        <div class="row-value" style="border-left:1px solid #e8edf5;color:#6b7a94;">Standard Rate</div>
+        <div class="row-value" style="border-left:2px solid rgba(245,158,11,0.3);border-right:2px solid rgba(245,158,11,0.3);background:rgba(245,158,11,0.02);color:#6b7a94;">Standard Rate</div>
+        <div class="row-value" style="border-left:1px solid #e8edf5;"><span class="free-badge">100% FREE</span></div>
+      </div>
+    </div>
+    <!-- View Inclusions Link -->
+    <div class="pricing-view-link">
+      <a href="#inclusions">📄 View Inclusions, Exclusions & Optional Services</a>
+    </div>
+  </div>
+</section>
+
+<!-- Inclusions, Exclusions & Optional Services -->
+<section class="inclusions-section" id="inclusions">
+  <div class="inclusions-header">
+    <span class="section-badge">PACKAGE DETAILS</span>
+    <h2>Inclusions, Exclusions & Optionals</h2>
+    <p>A clear breakdown of what's covered, what's not, and what's available at additional cost.</p>
+  </div>
+  <div class="inclusions-content">
+    <!-- Package Inclusions -->
+    <div class="inclusions-block">
+      <h3 class="green">✓ PACKAGE INCLUSIONS</h3>
+      <div class="inclusions-list">
+        <div class="list-item"><span class="icon green">✓</span><span>Round-trip airfare (Manila–Paris, Rome–Manila)</span></div>
+        <div class="list-item"><span class="icon green">✓</span><span>Round-trip airport transfers</span></div>
+        <div class="list-item"><span class="icon green">✓</span><span>Airport terminal fee</span></div>
+        <div class="list-item"><span class="icon green">✓</span><span>1pc 20kg check-in luggage + 1pc personal bag</span></div>
+        <div class="list-item"><span class="icon green">✓</span><span>12 nights hotel accommodation (3-star)</span></div>
+        <div class="list-item"><span class="icon green">✓</span><span>Visit France, Switzerland, Italy & Vatican</span></div>
+        <div class="list-item"><span class="icon green">✓</span><span>Coach transfers all throughout the tour</span></div>
+        <div class="list-item"><span class="icon green">✓</span><span>Daily breakfast at the hotel</span></div>
+        <div class="list-item"><span class="icon green">✓</span><span>English-speaking tour guide</span></div>
+        <div class="list-item"><span class="icon green">✓</span><span>All city tours as per itinerary</span></div>
+      </div>
+    </div>
+    <!-- Package Exclusions -->
+    <div class="inclusions-block">
+      <h3 class="red">✕ PACKAGE EXCLUSIONS</h3>
+      <div class="exclusions-list">
+        <div class="list-item"><span class="icon red">✕</span><span>Lunch and Dinner (for more diversity and freedom of food choices)</span></div>
+        <div class="list-item"><span class="icon red">✕</span><span>Mandatory permits, city tax & compulsory tipping: EUR 525/head</span></div>
+        <div class="list-item"><span class="icon red">✕</span><span>Philippine Travel Tax: PHP 1,620/head</span></div>
+      </div>
+    </div>
+    <!-- Optional Services -->
+    <div class="inclusions-block">
+      <h3 class="blue">◎ OPTIONAL SERVICES</h3>
+      <div class="optionals-list">
+        <div class="list-item"><span class="icon blue">◎</span><span>Visa assistance fee & appointment fee: PHP 20,000/pax</span></div>
+        <div class="list-item"><span class="icon blue">◎</span><span>Travel Insurance: PHP 6,000/pax</span></div>
+        <div class="list-item"><span class="icon blue">◎</span><span>Admission fees and Optional tours/activities</span></div>
+      </div>
+    </div>
+    <!-- CTA -->
+    <div class="inclusions-cta">
+      <a href="#reservation-form" class="btn btn-accent">Reserve Your Slot →</a>
+    </div>
+  </div>
 </section>
 
 <!-- Reservation Form -->
@@ -508,6 +716,56 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Playfair Display', serif; }
   </div>
   <div class="footer-bottom">© 2026 Discover Group of Travel Services Incorporated. All Rights Reserved.</div>
 </footer>
+
+<!-- Full Cash Modal -->
+<div class="modal-overlay" id="fullcash-modal" onclick="closeModalOutside(event)">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal('fullcash-modal')">&times;</button>
+    <div class="modal-icon blue">✨</div>
+    <div class="modal-title">Maximize Your Savings</div>
+    <div class="modal-subtitle">₱180,000 Full Cash Payment Scheme</div>
+    <div class="modal-card blue">
+      <p style="font-size:0.7rem;font-weight:700;color:#6b7a94;text-transform:uppercase;letter-spacing:0.1em;">Hassle-Free Full Payment</p>
+      <p style="font-size:2rem;font-weight:900;color:var(--primary);margin:0.25rem 0;">₱180,000</p>
+      <p style="font-size:0.85rem;color:#6b7a94;line-height:1.6;margin-top:0.75rem;">Secure your slot and lock in the <strong style="color:var(--primary);">maximum savings instantly</strong> by settling the full amount.</p>
+      <div class="check-note">✓ No future installments. Zero payment worries.</div>
+    </div>
+    <p class="modal-note">*Note: Fully protected by our 100% refund guarantee in case of visa denial.</p>
+    <button class="modal-btn blue" onclick="closeModal('fullcash-modal');selectPayment('cash');">Select Full Cash & Reserve Slot</button>
+  </div>
+</div>
+
+<!-- Down Payment Modal -->
+<div class="modal-overlay" id="downpayment-modal" onclick="closeModalOutside(event)">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal('downpayment-modal')">&times;</button>
+    <div class="modal-icon gold">📅</div>
+    <div class="modal-title">Down Payment Schedule</div>
+    <div class="modal-subtitle">₱50,000 Down Payment Scheme terms & guidelines</div>
+    <div class="modal-card gold">
+      <div class="step-row">
+        <div class="step-num gold">1</div>
+        <div>
+          <div class="step-label">Initial Down Payment</div>
+          <div class="step-amount gold">₱50,000</div>
+          <div class="step-desc">Secure your slot! Must be settled <strong style="color:var(--primary);">before the promo ends or all slots are taken</strong>.</div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="step-row">
+        <div class="step-num gold">2</div>
+        <div>
+          <div class="step-label">Remaining Balance</div>
+          <div class="step-amount blue">₱130,000</div>
+          <div class="step-desc">Due exactly <strong style="color:var(--primary);">5 days after the release</strong> of your visa result.</div>
+          <div class="step-note">⚠️ Note: Visa application process starts at least 6 months before the travel date.</div>
+        </div>
+      </div>
+    </div>
+    <p class="modal-note">*Note: Fully protected by our 100% refund guarantee in case of visa denial.</p>
+    <button class="modal-btn gold" onclick="closeModal('downpayment-modal');selectPayment('downpayment');">Select Down Payment & Reserve Slot</button>
+  </div>
+</div>
 
 <!-- Toast -->
 <div class="toast" id="toast"></div>
@@ -822,15 +1080,11 @@ function renderInstallmentPreview(total, travelDateId) {
   let html = `<h4>📅 Your Installment Plan (${months} months)</h4>`;
   html += `<div class="note">Fully paid 3 months before departure. Monthly payments divided equally:</div>`;
   
-  const showMonths = Math.min(months, 3);
   let payDate = new Date(startMonth);
-  for (let i = 0; i < showMonths; i++) {
+  for (let i = 0; i < months; i++) {
     const dateStr = payDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     html += `<div class="installment-row"><span class="date">${dateStr}</span><span class="amount">${formatPHP(monthlyAmount)} per head</span></div>`;
     payDate.setMonth(payDate.getMonth() + 1);
-  }
-  if (months > 3) {
-    html += `<div class="installment-more">... and ${months - 3} more payments</div>`;
   }
   html += `<div class="installment-row total"><span class="date">Total (${months} months)</span><span class="amount">${formatPHP(perHead)} per head</span></div>`;
   
@@ -891,9 +1145,46 @@ function showToast(msg, type = 'success') {
 }
 
 // ==================== INIT ====================
+// ==================== COUNTDOWN TIMER ====================
+function updateCountdown() {
+  const target = new Date('2026-07-18T23:59:59+08:00').getTime();
+  const now = Date.now();
+  const diff = Math.max(0, target - now);
+  const days = Math.floor(diff / (1000*60*60*24));
+  const hours = Math.floor((diff/(1000*60*60))%24);
+  const mins = Math.floor((diff/(1000*60))%60);
+  const secs = Math.floor((diff/1000)%60);
+  const daysEl = document.getElementById('cd-days');
+  const hoursEl = document.getElementById('cd-hours');
+  const minsEl = document.getElementById('cd-mins');
+  const secsEl = document.getElementById('cd-secs');
+  if (daysEl) daysEl.textContent = String(days).padStart(2,'0');
+  if (hoursEl) hoursEl.textContent = String(hours).padStart(2,'0');
+  if (minsEl) minsEl.textContent = String(mins).padStart(2,'0');
+  if (secsEl) secsEl.textContent = String(secs).padStart(2,'0');
+}
+setInterval(updateCountdown, 1000);
+
+// ==================== MODALS ====================
+function openModal(id) {
+  document.getElementById(id).classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('active');
+  document.body.style.overflow = '';
+}
+function closeModalOutside(e) {
+  if (e.target === e.currentTarget) {
+    e.target.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   initItinerary();
   recalculate();
+  updateCountdown();
 });
 </script>
 </body>
