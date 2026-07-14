@@ -1046,15 +1046,28 @@ function recalculate() {
   const standardRate = selectedPackage === 'full' ? 180000 : 150000;
   const count = parseInt(document.getElementById('travelersCount').value);
   const primaryDob = document.getElementById('dob').value;
-  const firstName = document.getElementById('firstName').value || 'Primary Traveler';
+  // Build full name for primary traveler
+  const pFirst = document.getElementById('firstName').value || '';
+  const pMiddle = document.getElementById('middleName').value || '';
+  const pLast = document.getElementById('lastName').value || '';
+  const pSuffix = document.getElementById('suffix').value || 'None';
+  const primaryFullName = [pFirst, pMiddle, pLast, pSuffix !== 'None' ? pSuffix : ''].filter(Boolean).join(' ').trim() || 'Primary Traveler';
   
   // Collect all participants
-  const participants = [{ name: firstName, dob: primaryDob }];
+  const participants = [{ name: primaryFullName, dob: primaryDob }];
   for (let i = 2; i <= count; i++) {
     const dobEl = document.querySelector(`.traveler-field[data-idx="${i}"][data-field="dob"]`);
-    const nameEl = document.querySelector(`.traveler-field[data-idx="${i}"][data-field="firstName"]`);
+    const fnEl = document.querySelector(`.traveler-field[data-idx="${i}"][data-field="firstName"]`);
+    const mnEl = document.querySelector(`.traveler-field[data-idx="${i}"][data-field="middleName"]`);
+    const lnEl = document.querySelector(`.traveler-field[data-idx="${i}"][data-field="lastName"]`);
+    const sfEl = document.querySelector(`.traveler-field[data-idx="${i}"][data-field="suffix"]`);
+    const fn = fnEl ? fnEl.value : '';
+    const mn = mnEl ? mnEl.value : '';
+    const ln = lnEl ? lnEl.value : '';
+    const sf = sfEl && sfEl.value !== 'None' ? sfEl.value : '';
+    const fullName = [fn, mn, ln, sf].filter(Boolean).join(' ').trim() || `Traveler ${i}`;
     participants.push({
-      name: nameEl ? nameEl.value || `Traveler ${i}` : `Traveler ${i}`,
+      name: fullName,
       dob: dobEl ? dobEl.value : ''
     });
   }
@@ -1098,7 +1111,7 @@ function recalculate() {
     summaryEl.style.display = 'block';
     let html = `<h4>💰 Pricing Summary</h4>`;
     classified.forEach(p => {
-      const label = p.index === 0 ? 'Primary Traveler' : p.name;
+      const label = p.index === 0 ? `Primary Traveler — ${p.name}` : p.name;
       const catBadge = p.category !== 'adult' ? `<span class="badge">${getCategoryLabel(p.category)}</span>` : '';
       const originalShow = p.discount > 0 ? `<span class="original">${formatPHP(standardRate)}</span>` : '';
       const discountShow = p.discount > 0 ? `<span class="discount-text">(-${formatPHP(p.discount)})</span>` : '';
