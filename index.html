@@ -206,7 +206,7 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Playfair Display', serif; }
 .pricing .section-badge { display: inline-block; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; background: var(--primary); color: white; padding: 0.4rem 1rem; border-radius: 2rem; margin-bottom: 1rem; }
 .pricing h2 { font-size: clamp(1.8rem, 4vw, 2.5rem); color: var(--primary); margin-bottom: 0.75rem; }
 .pricing .section-sub { color: #6b7a94; font-size: 0.95rem; max-width: 600px; margin: 0 auto 3rem; }
-.pricing-card { background: white; border-radius: 1.5rem; overflow: hidden; box-shadow: 0 4px 30px rgba(0,0,0,0.08); border: 1px solid #e8edf5; max-width: 1000px; margin: 0 auto; }
+.pricing-card { background: white; border-radius: 1.5rem; overflow: visible; box-shadow: 0 4px 30px rgba(0,0,0,0.08); border: 1px solid #e8edf5; max-width: 1000px; margin: 1.5rem auto 0; }
 .pricing-header { display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; border-bottom: 1px solid #e8edf5; }
 .pricing-header-intro { padding: 2rem 1.5rem; text-align: left; display: flex; flex-direction: column; justify-content: center; }
 .pricing-header-intro h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--primary); margin-bottom: 0.5rem; }
@@ -494,7 +494,7 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Playfair Display', serif; }
         <a href="#reservation-form" class="view-schedule-btn dark">View Schedule</a>
       </div>
       <div class="pricing-header-col best-seller-col" style="position:relative;border-left:2px solid rgba(245,158,11,0.5);border-right:2px solid rgba(245,158,11,0.5);background:rgba(245,158,11,0.03);">
-        <span class="col-badge" style="position:absolute;top:-10px;left:50%;transform:translateX(-50);font-size:0.6rem;">⭐ BEST SELLER</span>
+        <span class="col-badge" style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);font-size:0.6rem;padding:0.3rem 0.8rem;white-space:nowrap;z-index:2;">⭐ BEST SELLER</span>
         <span class="col-sub-badge">DOWN PAYMENT</span>
         <div class="col-amount">₱50,000</div>
         <button class="view-schedule-btn gold" onclick="openModal('downpayment-modal')">View Schedule</button>
