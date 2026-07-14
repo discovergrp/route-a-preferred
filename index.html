@@ -346,7 +346,7 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Playfair Display', serif; }
 .toast.show { transform: translateX(0); }
 .toast.error { background: #dc2626; }
 </style>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
 </head>
 <body>
 
@@ -835,8 +835,7 @@ let selectedPackage = 'full';
 let selectedPayment = 'installment';
 let promoCodeVerified = false;
 
-// ==================== EMAILJS INIT ====================
-(function() { emailjs.init('efpG_Tb5G5t8BfEfJ'); })();
+
 
 // ==================== PROMO CODE ====================
 function verifyPromoCode() {
@@ -1279,11 +1278,13 @@ function handleSubmit(e) {
   btn.disabled = true;
   btn.textContent = 'Submitting...';
   
-  // Send via EmailJS
-  const templateParams = {
+  // Send via Web3Forms
+  const formData = {
+    access_key: '7332ba6f-c90e-4d55-ac88-cf63c72e4e48',
+    subject: `New Route A Booking: ${data.firstName} ${data.lastName} - ${travelDateLabel}`,
     from_name: `${data.firstName} ${data.lastName}`,
-    from_email: data.email,
-    contact_no: data.contactNo,
+    email: data.email,
+    phone: data.contactNo,
     travel_date: travelDateLabel,
     package_type: selectedPackage === 'full' ? 'Full Package (₱180,000)' : 'Land Arrangement Only (₱150,000)',
     payment_scheme: selectedPayment === 'installment' ? 'Monthly Installment' : selectedPayment === 'downpayment' ? '₱50K Down Payment' : 'Full Cash',
@@ -1292,18 +1293,29 @@ function handleSubmit(e) {
     message: message
   };
   
-  emailjs.send('service_routea', 'template_vtbhklo', templateParams)
-    .then(function() {
-      showToast('Reservation submitted successfully! Redirecting to Messenger...');
-      btn.textContent = '✓ Submitted Successfully';
-      // Redirect to Messenger after 2 seconds
-      setTimeout(() => {
-        window.open('https://m.me/discovergrp', '_blank');
-      }, 2000);
+  fetch('https://api.web3forms.com/submit', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(formData)
+  })
+    .then(res => res.json())
+    .then(result => {
+      if (result.success) {
+        showToast('Reservation submitted successfully! Redirecting to Messenger...');
+        btn.textContent = '✓ Submitted Successfully';
+        setTimeout(() => {
+          window.open('https://m.me/discovergrp', '_blank');
+        }, 2000);
+      } else {
+        showToast('Submission received! Redirecting to Messenger...');
+        btn.textContent = '✓ Submitted';
+        setTimeout(() => {
+          window.open('https://m.me/discovergrp', '_blank');
+        }, 2000);
+      }
     })
     .catch(function(error) {
-      console.error('EmailJS error:', error);
-      // Fallback: show success anyway and offer mailto
+      console.error('Web3Forms error:', error);
       showToast('Submission received! If you don\'t hear from us, please message us on Facebook.');
       btn.textContent = '✓ Submitted';
       setTimeout(() => {
