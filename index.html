@@ -1330,7 +1330,7 @@ function recalculate() {
     summaryEl.style.display = 'block';
     let html = `<h4>💰 Pricing Summary</h4>`;
     classified.forEach(p => {
-      const label = p.index === 0 ? `Primary Traveler — ${p.name}` : p.name;
+      const label = p.name;
       const catBadge = p.category !== 'adult' ? `<span class="badge">${getCategoryLabel(p.category)}</span>` : '';
       const originalShow = p.discount > 0 ? `<span class="original">${formatPHP(standardRate)}</span>` : '';
       const discountShow = p.discount > 0 ? `<span class="discount-text">(-${formatPHP(p.discount)})</span>` : '';
