@@ -1608,7 +1608,8 @@ function handleSubmit(e) {
     travelers_count: data.travelersCount + ' person(s)',
     total_amount: totalAmount,
     travel_consultant: document.getElementById('travelConsultant').value,
-    message: message
+    message: message,
+    review_approve_link: generateBookingLink()
   };
   
   fetch('https://api.web3forms.com/submit', {
@@ -1641,6 +1642,74 @@ function showToast(msg, type = 'success') {
 
 // Global booking data for confirmation
 let lastBookingData = null;
+
+// Generate a shareable booking confirmation link
+function generateBookingLink() {
+  if (!lastBookingData) return '';
+  const bd = lastBookingData;
+  const bookingPayload = {
+    t: bd.allTravelers.map(t => ({
+      f: t.firstName, m: t.middleName, l: t.lastName, s: t.suffix,
+      g: t.gender, d: t.dob, c: t.contact, e: t.email
+    })),
+    gt: bd.grandTotal,
+    cnt: bd.count,
+    pkg: bd.packageType,
+    pay: bd.paymentScheme,
+    td: bd.travelDateId,
+    tdl: bd.travelDateLabel,
+    sr: bd.standardRate,
+    tc: bd.travelConsultant,
+    pd: bd.promoDiscount || 0,
+    cl: bd.classified.map(c => ({ cat: c.category, rate: c.rate, disc: c.discount, free: c.isFree, fr: c.finalRate }))
+  };
+  const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(bookingPayload))));
+  return `https://discovergrp.github.io/route-a-preferred/?booking=${encoded}`;
+}
+
+// Check URL for booking parameter on page load
+function checkBookingUrl() {
+  const params = new URLSearchParams(window.location.search);
+  const bookingParam = params.get('booking');
+  if (bookingParam && bookingParam !== 'encoded_data') {
+    try {
+      const json = decodeURIComponent(escape(atob(bookingParam)));
+      const bp = JSON.parse(json);
+      // Reconstruct lastBookingData from the URL payload
+      const allTravelers = bp.t.map(t => ({
+        firstName: t.f, middleName: t.m, lastName: t.l, suffix: t.s,
+        gender: t.g, dob: t.d, contact: t.c, email: t.e
+      }));
+      const classified = bp.cl.map((c, idx) => ({
+        name: [allTravelers[idx].firstName, allTravelers[idx].middleName, allTravelers[idx].lastName].filter(Boolean).join(' '),
+        dob: allTravelers[idx].dob,
+        index: idx,
+        category: c.cat,
+        rate: c.rate,
+        discount: c.disc,
+        isFree: c.free,
+        finalRate: c.fr
+      }));
+      lastBookingData = {
+        allTravelers,
+        classified,
+        grandTotal: bp.gt,
+        promoDiscount: bp.pd,
+        count: bp.cnt,
+        packageType: bp.pkg,
+        paymentScheme: bp.pay,
+        travelDateId: bp.td,
+        travelDateLabel: bp.tdl,
+        standardRate: bp.sr,
+        travelConsultant: bp.tc
+      };
+      // Small delay to ensure DOM is ready
+      setTimeout(() => { showSuccessMessage(); }, 300);
+    } catch(e) {
+      console.error('Failed to parse booking URL:', e);
+    }
+  }
+}
 
 function showSuccessMessage() {
   // Use the globally stored booking data
@@ -2399,6 +2468,7 @@ document.addEventListener('DOMContentLoaded', () => {
   recalculate();
   updateCountdown();
   updateFreebies();
+  checkBookingUrl();
 });
 
 // ==================== DRAGGABLE DETAIL POPUP ====================
