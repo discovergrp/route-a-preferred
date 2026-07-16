@@ -1608,7 +1608,8 @@ function handleSubmit(e) {
     travelers_count: data.travelersCount + ' person(s)',
     total_amount: totalAmount,
     travel_consultant: document.getElementById('travelConsultant').value,
-    message: message
+    message: message,
+    review_approve_link: generateBookingLink()
   };
   
   fetch('https://api.web3forms.com/submit', {
@@ -2462,7 +2463,7 @@ function submitSignedConfirmation() {
   
   // Include the shareable booking link WITH client signature for agent review
   if (!isAgentReviewMode) {
-    formData.append('Review_Approve_Link', generateBookingLink());
+    formData.append('Review_Approve_Link_With_Signature', generateBookingLink());
   }
 
   fetch('https://api.web3forms.com/submit', {
