@@ -1645,6 +1645,30 @@ let lastBookingData = null;
 let isAgentReviewMode = false; // true when loaded via ?booking= URL (agent clicking from email)
 
 // Generate a shareable booking confirmation link
+// Compress a signature data URL to a small JPEG for URL embedding
+function compressSignature(dataUrl) {
+  return new Promise((resolve) => {
+    if (!dataUrl) { resolve(''); return; }
+    const img = new Image();
+    img.onload = function() {
+      // Resize to small dimensions (200x80) and use JPEG with low quality
+      const canvas = document.createElement('canvas');
+      canvas.width = 200;
+      canvas.height = 80;
+      const ctx = canvas.getContext('2d');
+      // White background for JPEG (no transparency)
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, 200, 80);
+      ctx.drawImage(img, 0, 0, 200, 80);
+      // Export as JPEG with 0.3 quality (very small ~2-4KB)
+      const compressed = canvas.toDataURL('image/jpeg', 0.3);
+      resolve(compressed);
+    };
+    img.onerror = function() { resolve(''); };
+    img.src = dataUrl;
+  });
+}
+
 function generateBookingLink() {
   if (!lastBookingData) return '';
   const bd = lastBookingData;
@@ -1663,7 +1687,7 @@ function generateBookingLink() {
     tc: bd.travelConsultant,
     pd: bd.promoDiscount || 0,
     cl: bd.classified.map(c => ({ cat: c.category, rate: c.rate, disc: c.discount, free: c.isFree, fr: c.finalRate })),
-    cs: bd.clientSignature || '' // Client signature data URL
+    cs: bd.compressedSignature || '' // Compressed client signature
   };
   const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(bookingPayload))));
   return `https://discovergrp.github.io/route-a-preferred/?booking=${encoded}`;
@@ -1704,7 +1728,7 @@ function checkBookingUrl() {
         travelDateLabel: bp.tdl,
         standardRate: bp.sr,
         travelConsultant: bp.tc,
-        clientSignature: bp.cs || '' // Client signature from URL
+        clientSignature: bp.cs || '' // Compressed client signature from URL (used for display)
       };
       isAgentReviewMode = true; // Agent is viewing from email link
       // Small delay to ensure DOM is ready
@@ -2406,7 +2430,7 @@ function updateSubmitState() {
   }
 }
 
-function submitSignedConfirmation() {
+async function submitSignedConfirmation() {
   const btn = document.getElementById('bcSubmitBtn');
   const status = document.getElementById('bcSubmitStatus');
   btn.disabled = true;
@@ -2417,8 +2441,10 @@ function submitSignedConfirmation() {
   
   // Store the signature in lastBookingData for PDF generation
   if (!isAgentReviewMode) {
-    // Client just signed — save their signature
+    // Client just signed — save their signature (full quality for PDF)
     lastBookingData.clientSignature = sigDataUrl;
+    // Also create a compressed version for the URL link
+    lastBookingData.compressedSignature = await compressSignature(sigDataUrl);
   } else {
     // Agent just signed — save consultant signature
     lastBookingData.consultantSignature = sigDataUrl;
