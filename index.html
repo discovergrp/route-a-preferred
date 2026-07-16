@@ -471,6 +471,9 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Playfair Display', serif; }
 .bc-submit-status.ready { color: #16a34a; font-weight: 700; }
 .bc-submit-status.pending { color: #6b7a94; }
 
+@media screen {
+  .bc-package-print { display: none; }
+}
 @media print {
   body * { visibility: hidden; }
   .booking-confirmation, .booking-confirmation * { visibility: visible; }
@@ -1876,7 +1879,7 @@ function showSuccessMessage() {
       </div>
 
       <!-- Full Package Details (print only) -->
-      <div class="bc-package-print" style="display:none;">
+      <div class="bc-package-print">
         <div style="margin-bottom:1.5rem;">
           <h4 style="font-size:0.85rem;font-weight:800;color:#16a34a;margin-bottom:0.5rem;border-bottom:2px solid #a7f3d0;padding-bottom:0.3rem;">✓ Package Inclusions</h4>
           <ul style="font-size:0.75rem;color:#374151;padding-left:1.2rem;margin:0;line-height:1.8;">
