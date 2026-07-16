@@ -1642,6 +1642,7 @@ function showToast(msg, type = 'success') {
 
 // Global booking data for confirmation
 let lastBookingData = null;
+let isAgentReviewMode = false; // true when loaded via ?booking= URL (agent clicking from email)
 
 // Generate a shareable booking confirmation link
 function generateBookingLink() {
@@ -1703,6 +1704,7 @@ function checkBookingUrl() {
         standardRate: bp.sr,
         travelConsultant: bp.tc
       };
+      isAgentReviewMode = true; // Agent is viewing from email link
       // Small delay to ensure DOM is ready
       setTimeout(() => { showSuccessMessage(); }, 300);
     } catch(e) {
@@ -2182,9 +2184,40 @@ function showSuccessMessage() {
       <!-- Signature Section -->
       <div class="bc-signature-section">
         <div class="bc-section-title">Agreement & Signature</div>
-        <p class="bc-signature-intro">By signing below, I confirm that I have read, understood, and agree to all terms and conditions stated in this booking confirmation. I acknowledge that the information provided above is accurate and complete.</p>
+        <p class="bc-signature-intro">${isAgentReviewMode 
+          ? 'As the assigned Travel Consultant, I confirm that I have reviewed this booking confirmation and all details are accurate and complete.' 
+          : 'By signing below, I confirm that I have read, understood, and agree to all terms and conditions stated in this booking confirmation. I acknowledge that the information provided above is accurate and complete.'}</p>
 
         <div class="bc-signature-grid">
+          ${isAgentReviewMode ? `
+          <!-- Client Signature (already signed - display only) -->
+          <div class="bc-sig-box">
+            <div class="bc-sig-label">Client Signature</div>
+            <div class="bc-sig-consultant" style="background:#f0fdf4;border-color:#16a34a;">
+              <p style="color:#16a34a;font-weight:600;">✓ Signed by client during registration</p>
+            </div>
+            <div class="bc-sig-info">
+              <p class="name">${bd.allTravelers[0].firstName} ${bd.allTravelers[0].middleName || ''} ${bd.allTravelers[0].lastName}</p>
+              <p class="date">Status: Signed</p>
+            </div>
+          </div>
+
+          <!-- Travel Consultant Signature (active - agent signs here) -->
+          <div class="bc-sig-box">
+            <div class="bc-sig-label">Travel Consultant Signature</div>
+            <div class="bc-sig-canvas-wrap" id="sigCanvasWrap">
+              <canvas id="signatureCanvas"></canvas>
+              <div class="bc-sig-placeholder" id="sigPlaceholder">Sign here with your finger or mouse</div>
+            </div>
+            <div class="bc-sig-actions">
+              <button class="bc-sig-clear" onclick="clearSignature()">✕ Clear</button>
+            </div>
+            <div class="bc-sig-info">
+              <p class="name" id="consultantPrintedName">${bd.travelConsultant || 'Travel Consultant'}</p>
+              <p class="date">Position: Travel Consultant</p>
+            </div>
+          </div>
+          ` : `
           <!-- Client Signature -->
           <div class="bc-sig-box">
             <div class="bc-sig-label">Client Signature</div>
@@ -2212,13 +2245,14 @@ function showSuccessMessage() {
               <p class="date">Position: Travel Consultant</p>
             </div>
           </div>
+          `}
         </div>
       </div>
 
       <!-- Submit Button -->
       <div class="bc-submit-section" id="bcSubmitSection">
-        <button class="bc-submit-btn" id="bcSubmitBtn" disabled onclick="submitSignedConfirmation()">✍️ Submit Signed Confirmation</button>
-        <p class="bc-submit-status pending" id="bcSubmitStatus">Please accept the terms and sign above to submit</p>
+        <button class="bc-submit-btn" id="bcSubmitBtn" disabled onclick="submitSignedConfirmation()">${isAgentReviewMode ? '✍️ Submit Consultant Approval' : '✍️ Submit Signed Confirmation'}</button>
+        <p class="bc-submit-status pending" id="bcSubmitStatus">${isAgentReviewMode ? 'Please accept the terms and sign above to approve' : 'Please accept the terms and sign above to submit'}</p>
       </div>
 
     </div>
@@ -2355,17 +2389,17 @@ function updateSubmitState() {
     btn.disabled = false;
     if (printBtn) { printBtn.disabled = false; printBtn.style.opacity = '1'; printBtn.style.cursor = 'pointer'; }
     status.className = 'bc-submit-status ready';
-    status.textContent = '\u2713 Signed — ready to submit';
+    status.textContent = isAgentReviewMode ? '\u2713 Signed — ready to approve' : '\u2713 Signed — ready to submit';
   } else {
     btn.disabled = true;
     if (printBtn) { printBtn.disabled = true; printBtn.style.opacity = '0.5'; printBtn.style.cursor = 'not-allowed'; }
     status.className = 'bc-submit-status pending';
     if (!termsChecked && !hasSigned) {
-      status.textContent = 'Please accept the terms and sign above to submit';
+      status.textContent = isAgentReviewMode ? 'Please accept the terms and sign above to approve' : 'Please accept the terms and sign above to submit';
     } else if (!termsChecked) {
       status.textContent = 'Please accept the terms and conditions above';
     } else {
-      status.textContent = 'Please sign above to submit your booking confirmation';
+      status.textContent = isAgentReviewMode ? 'Please sign above to approve this booking' : 'Please sign above to submit your booking confirmation';
     }
   }
 }
@@ -2382,12 +2416,21 @@ function submitSignedConfirmation() {
   // Send signature data to Web3Forms along with booking reference
   const formData = new FormData();
   formData.append('access_key', '7332ba6f-c90e-4d55-ac88-cf63c72e4e48');
-  formData.append('subject', 'SIGNED Booking Confirmation - ' + (lastBookingData ? lastBookingData.allTravelers[0].firstName + ' ' + lastBookingData.allTravelers[0].lastName : 'Client'));
-  formData.append('from_name', 'Route A Preferred - Signed Confirmation');
+  const clientName = lastBookingData ? lastBookingData.allTravelers[0].firstName + ' ' + lastBookingData.allTravelers[0].lastName : 'Client';
+  if (isAgentReviewMode) {
+    formData.append('subject', 'CONSULTANT APPROVED - ' + clientName + ' (by ' + (lastBookingData.travelConsultant || 'Agent') + ')');
+    formData.append('from_name', 'Route A Preferred - Consultant Approval');
+  } else {
+    formData.append('subject', 'SIGNED Booking Confirmation - ' + clientName);
+    formData.append('from_name', 'Route A Preferred - Signed Confirmation');
+  }
   formData.append('Booking_Reference', document.querySelector('.bc-footer p:last-child') ? document.querySelector('.bc-footer p:last-child').textContent : '');
-  formData.append('Client_Name', lastBookingData ? lastBookingData.allTravelers[0].firstName + ' ' + lastBookingData.allTravelers[0].middleName + ' ' + lastBookingData.allTravelers[0].lastName : '');
-  formData.append('Terms_Accepted', 'Yes - Client accepted all Terms & Conditions');
-  formData.append('Signature_Provided', 'Yes - Digital signature captured');
+  formData.append('Client_Name', lastBookingData ? lastBookingData.allTravelers[0].firstName + ' ' + (lastBookingData.allTravelers[0].middleName || '') + ' ' + lastBookingData.allTravelers[0].lastName : '');
+  formData.append('Terms_Accepted', isAgentReviewMode ? 'Yes - Consultant reviewed and approved' : 'Yes - Client accepted all Terms & Conditions');
+  formData.append('Signature_Provided', isAgentReviewMode ? 'Yes - Consultant digital signature captured' : 'Yes - Client digital signature captured');
+  if (isAgentReviewMode && lastBookingData.travelConsultant) {
+    formData.append('Approved_By', lastBookingData.travelConsultant);
+  }
   formData.append('Date_Signed', new Date().toLocaleString('en-US', { timeZone: 'Asia/Manila' }));
   formData.append('Signature_Data', sigDataUrl);
   
@@ -2417,7 +2460,7 @@ function submitSignedConfirmation() {
     btn.style.background = '#16a34a';
     
     // Show success toast
-    showToast('Signed booking confirmation sent to inquiry@discovergrp.com!', 'success');
+    showToast(isAgentReviewMode ? 'Consultant approval submitted to inquiry@discovergrp.com!' : 'Signed booking confirmation sent to inquiry@discovergrp.com!', 'success');
   }).catch(err => {
     status.className = 'bc-submit-status ready';
     status.textContent = '\u2713 Confirmation saved. You may print this page for your records.';
