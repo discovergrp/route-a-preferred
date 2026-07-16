@@ -1674,7 +1674,7 @@ function showSuccessMessage() {
     const catLabel = p.category !== 'adult' ? ` (${getCategoryLabel(p.category)})` : '';
     const freeLabel = p.isFree ? ' — FREE' : '';
     pricingRows += `<tr${p.isFree ? ' class="discount-row"' : ''}>
-      <td>${idx === 0 ? 'Primary Traveler' : bd.allTravelers[idx].firstName + ' ' + bd.allTravelers[idx].lastName}${catLabel}${freeLabel}</td>
+      <td>${bd.allTravelers[idx].firstName + ' ' + bd.allTravelers[idx].lastName}${catLabel}${freeLabel}</td>
       <td class="text-right">${formatPHP(p.rate)}</td>
       <td class="text-center">1</td>
       <td class="text-right font-bold">${p.isFree ? 'FREE' : formatPHP(p.finalRate)}</td>
