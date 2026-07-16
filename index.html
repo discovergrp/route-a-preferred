@@ -1580,7 +1580,8 @@ function handleSubmit(e) {
     travelDateId,
     travelDateLabel,
     standardRate,
-    travelConsultant: document.getElementById('travelConsultant').value
+    travelConsultant: document.getElementById('travelConsultant').value,
+    specialRequests: document.getElementById('notes').value || ''
   };
   // ===== END BOOKING DATA COLLECTION =====
 
@@ -1686,7 +1687,8 @@ function generateBookingLink() {
     tc: bd.travelConsultant,
     pd: bd.promoDiscount || 0,
     cl: bd.classified.map(c => ({ cat: c.category, rate: c.rate, disc: c.discount, free: c.isFree, fr: c.finalRate })),
-    cs: bd.compressedSignature || '' // Compressed client signature
+    cs: bd.compressedSignature || '', // Compressed client signature
+    nr: bd.specialRequests || '' // Special requests/notes
   };
   const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(bookingPayload))));
   return `https://discovergrp.github.io/route-a-preferred/?booking=${encoded}`;
@@ -1727,7 +1729,8 @@ function checkBookingUrl() {
         travelDateLabel: bp.tdl,
         standardRate: bp.sr,
         travelConsultant: bp.tc,
-        clientSignature: bp.cs || '' // Compressed client signature from URL (used for display)
+        clientSignature: bp.cs || '', // Compressed client signature from URL (used for display)
+        specialRequests: bp.nr || '' // Special requests/notes
       };
       isAgentReviewMode = true; // Agent is viewing from email link
       // Small delay to ensure DOM is ready
@@ -1928,6 +1931,10 @@ function showSuccessMessage() {
         <div class="bc-detail-item"><label>Travel Date</label><p class="highlight">${bd.travelDateLabel || (TRAVEL_DATES[bd.travelDateId] ? new Date(TRAVEL_DATES[bd.travelDateId].start).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}) + ' – ' + new Date(TRAVEL_DATES[bd.travelDateId].end).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}) : bd.travelDateId)}</p></div>
         <div class="bc-detail-item"><label>Payment Scheme</label><p>${payLabel}</p></div>
       </div>
+
+      <!-- Special Requests -->
+      ${bd.specialRequests ? `<div class="bc-section-title">Special Requests / Notes</div>
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:1rem 1.25rem;margin-bottom:2rem;font-size:0.9rem;color:#334155;white-space:pre-wrap;">${bd.specialRequests}</div>` : ''}
 
       <!-- Passenger Information -->
       <div class="bc-section-title">Passenger Information</div>
