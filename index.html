@@ -1608,8 +1608,7 @@ function handleSubmit(e) {
     travelers_count: data.travelersCount + ' person(s)',
     total_amount: totalAmount,
     travel_consultant: document.getElementById('travelConsultant').value,
-    message: message,
-    review_approve_link: generateBookingLink()
+    message: message
   };
   
   fetch('https://api.web3forms.com/submit', {
@@ -1662,7 +1661,8 @@ function generateBookingLink() {
     sr: bd.standardRate,
     tc: bd.travelConsultant,
     pd: bd.promoDiscount || 0,
-    cl: bd.classified.map(c => ({ cat: c.category, rate: c.rate, disc: c.discount, free: c.isFree, fr: c.finalRate }))
+    cl: bd.classified.map(c => ({ cat: c.category, rate: c.rate, disc: c.discount, free: c.isFree, fr: c.finalRate })),
+    cs: bd.clientSignature || '' // Client signature data URL
   };
   const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(bookingPayload))));
   return `https://discovergrp.github.io/route-a-preferred/?booking=${encoded}`;
@@ -1702,7 +1702,8 @@ function checkBookingUrl() {
         travelDateId: bp.td,
         travelDateLabel: bp.tdl,
         standardRate: bp.sr,
-        travelConsultant: bp.tc
+        travelConsultant: bp.tc,
+        clientSignature: bp.cs || '' // Client signature from URL
       };
       isAgentReviewMode = true; // Agent is viewing from email link
       // Small delay to ensure DOM is ready
@@ -2190,15 +2191,15 @@ function showSuccessMessage() {
 
         <div class="bc-signature-grid">
           ${isAgentReviewMode ? `
-          <!-- Client Signature (already signed - display only) -->
+          <!-- Client Signature (already signed - display actual signature) -->
           <div class="bc-sig-box">
             <div class="bc-sig-label">Client Signature</div>
-            <div class="bc-sig-consultant" style="background:#f0fdf4;border-color:#16a34a;">
-              <p style="color:#16a34a;font-weight:600;">✓ Signed by client during registration</p>
+            <div class="bc-sig-canvas-wrap has-signature" style="background:#fff;border-color:#16a34a;position:relative;">
+              ${bd.clientSignature ? `<img src="${bd.clientSignature}" style="width:100%;height:100%;object-fit:contain;" alt="Client Signature" />` : `<p style="color:#16a34a;font-weight:600;text-align:center;padding:2rem;">✓ Signed by client during registration</p>`}
             </div>
             <div class="bc-sig-info">
               <p class="name">${bd.allTravelers[0].firstName} ${bd.allTravelers[0].middleName || ''} ${bd.allTravelers[0].lastName}</p>
-              <p class="date">Status: Signed</p>
+              <p class="date">Date Signed: ${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
             </div>
           </div>
 
@@ -2413,6 +2414,15 @@ function submitSignedConfirmation() {
   // Get signature as data URL
   const sigDataUrl = signatureCanvas.toDataURL('image/png');
   
+  // Store the signature in lastBookingData for PDF generation
+  if (!isAgentReviewMode) {
+    // Client just signed — save their signature
+    lastBookingData.clientSignature = sigDataUrl;
+  } else {
+    // Agent just signed — save consultant signature
+    lastBookingData.consultantSignature = sigDataUrl;
+  }
+  
   // Send signature data to Web3Forms along with booking reference
   const formData = new FormData();
   formData.append('access_key', '7332ba6f-c90e-4d55-ac88-cf63c72e4e48');
@@ -2449,11 +2459,22 @@ function submitSignedConfirmation() {
   if (bd.promoApplied) formData.append('Promo_Applied', 'Yes - Buy 5 Get 1 FREE');
   formData.append('Contact_Email', bd.allTravelers[0].email);
   formData.append('Contact_Number', bd.allTravelers[0].contact);
+  
+  // Include the shareable booking link WITH client signature for agent review
+  if (!isAgentReviewMode) {
+    formData.append('Review_Approve_Link', generateBookingLink());
+  }
 
   fetch('https://api.web3forms.com/submit', {
     method: 'POST',
     body: formData
   }).then(r => r.json()).then(data => {
+    onSubmitSuccess();
+  }).catch(err => {
+    onSubmitSuccess();
+  });
+  
+  function onSubmitSuccess() {
     status.className = 'bc-submit-status ready';
     status.textContent = '\u2713 Booking confirmation submitted successfully!';
     btn.innerHTML = '\u2705 Submitted';
@@ -2461,12 +2482,19 @@ function submitSignedConfirmation() {
     
     // Show success toast
     showToast(isAgentReviewMode ? 'Consultant approval submitted to inquiry@discovergrp.com!' : 'Signed booking confirmation sent to inquiry@discovergrp.com!', 'success');
-  }).catch(err => {
-    status.className = 'bc-submit-status ready';
-    status.textContent = '\u2713 Confirmation saved. You may print this page for your records.';
-    btn.innerHTML = '\u2705 Saved';
-    btn.style.background = '#16a34a';
-  });
+    
+    // In agent mode, replace the canvas with a static image so the PDF shows the consultant signature
+    if (isAgentReviewMode) {
+      const canvasWrap = document.getElementById('sigCanvasWrap');
+      if (canvasWrap && sigDataUrl) {
+        canvasWrap.innerHTML = `<img src="${sigDataUrl}" style="width:100%;height:100%;object-fit:contain;" alt="Consultant Signature" />`;
+      }
+    }
+    
+    // Enable print button for PDF download
+    const printBtn = document.getElementById('bcPrintBtn');
+    if (printBtn) { printBtn.disabled = false; printBtn.style.opacity = '1'; printBtn.style.cursor = 'pointer'; }
+  }
 }
 
 // ==================== INIT ====================
