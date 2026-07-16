@@ -2468,12 +2468,17 @@ async function submitSignedConfirmation() {
     formData.append('Approved_By', lastBookingData.travelConsultant);
   }
   formData.append('Date_Signed', new Date().toLocaleString('en-US', { timeZone: 'Asia/Manila' }));
-  formData.append('Signature_Data', sigDataUrl);
+  
+  // Include the shareable booking link with client signature for agent review
+  // MUST be added BEFORE Signature_Data to avoid Web3Forms payload size limits
+  if (!isAgentReviewMode) {
+    formData.append('Review_Approve_Link', generateBookingLink());
+  }
   
   // Also build a comprehensive booking summary for the email
   const bd = lastBookingData;
   const travelerList = bd.allTravelers.map((t, i) => `${i+1}. ${t.firstName} ${t.middleName || ''} ${t.lastName}${t.suffix && t.suffix !== 'None' ? ' ' + t.suffix : ''} (${t.gender}, DOB: ${t.dob}, Contact: ${t.contact}, Email: ${t.email})`).join('\n');
-  const pricingList = bd.classified.map(c => `${c.label}: ₱${c.finalRate.toLocaleString()} x ${c.count} = ₱${(c.finalRate * c.count).toLocaleString()}`).join('\n');
+  const pricingList = bd.classified.map(c => `${c.name || c.category}: ₱${c.finalRate.toLocaleString()}`).join('\n');
   
   formData.append('Travel_Date', bd.travelDateLabel || bd.travelDateId);
   formData.append('Package_Type', bd.packageType === 'full' ? 'Full Package (With Airfare)' : 'Land Package Only');
@@ -2486,10 +2491,8 @@ async function submitSignedConfirmation() {
   formData.append('Contact_Email', bd.allTravelers[0].email);
   formData.append('Contact_Number', bd.allTravelers[0].contact);
   
-  // Include the shareable booking link with client signature for agent review
-  if (!isAgentReviewMode) {
-    formData.append('Review_Approve_Link', generateBookingLink());
-  }
+  // Add signature data last (it's large ~20-50KB) - may be truncated by Web3Forms
+  formData.append('Signature_Data', sigDataUrl);
 
   fetch('https://api.web3forms.com/submit', {
     method: 'POST',
