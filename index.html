@@ -1668,7 +1668,8 @@ function handleSubmit(e) {
     travelers_count: data.travelersCount + ' person(s)',
     total_amount: totalAmount,
     travel_consultant: document.getElementById('travelConsultant').value,
-    message: message
+    message: message,
+    review_approve_link: generateBookingLink()
   };
   
   fetch('https://api.web3forms.com/submit', {
