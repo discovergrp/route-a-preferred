@@ -1609,8 +1609,7 @@ function handleSubmit(e) {
     travelers_count: data.travelersCount + ' person(s)',
     total_amount: totalAmount,
     travel_consultant: document.getElementById('travelConsultant').value,
-    message: message,
-    review_approve_link: generateBookingLink()
+    message: message
   };
   
   fetch('https://api.web3forms.com/submit', {
@@ -2499,8 +2498,8 @@ async function submitSignedConfirmation() {
   formData.append('Contact_Email', bd.allTravelers[0].email);
   formData.append('Contact_Number', bd.allTravelers[0].contact);
   
-  // Add signature data last (it's large ~20-50KB) - may be truncated by Web3Forms
-  formData.append('Signature_Data', sigDataUrl);
+  // Note: Signature_Data (full PNG ~20-50KB) removed from email to stay within Web3Forms payload limits
+  // The client's signature is embedded in the Review_Approve_Link instead (compressed JPEG ~2-4KB)
 
   fetch('https://api.web3forms.com/submit', {
     method: 'POST',
