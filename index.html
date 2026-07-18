@@ -594,7 +594,7 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Playfair Display', serif; }
       <div class="ended">This promo has ended as of June 30, 2026.</div>
     </div>
 
-    <div class="countdown-label">🕐 <span>PROMO ENDS ON JULY 18, 2026</span></div>
+    <div class="countdown-label">🕐 <span>PROMO ENDS ON JULY 22, 2026</span></div>
 
     <div class="countdown-boxes">
       <div class="countdown-box"><div class="cd-value" id="cd-days">00</div><div class="cd-label">Days</div></div>
@@ -1242,7 +1242,7 @@ function updateFreebies() {
   if (!section || !content) return;
   
   const now = new Date();
-  const jul18 = new Date('2026-07-18T23:59:59+08:00');
+  const jul22 = new Date('2026-07-22T23:59:59+08:00');
   const jul20 = new Date('2026-07-20T23:59:59+08:00');
   const count = parseInt(document.getElementById('travelersCount').value || '1');
   const travelDateId = document.getElementById('travelDate').value;
@@ -1250,8 +1250,8 @@ function updateFreebies() {
   
   let freebies = [];
   
-  // Freebie 1: Register on or before Jul 18, 2026 — BUT NOT if Buy 5 Get 1 promo is active
-  if (now <= jul18 && !hasBuy5Get1) {
+  // Freebie 1: Register on or before Jul 22, 2026 — BUT NOT if Buy 5 Get 1 promo is active
+  if (now <= jul22 && !hasBuy5Get1) {
     freebies.push('<div style="display:flex;align-items:flex-start;gap:0.6rem;padding:0.5rem 0;"><span style="color:#16a34a;font-size:1.2rem;">\u2713</span><span style="font-size:0.85rem;color:#15803d;"><strong>Free 2 nights Salerno and Amalfi optional tour</strong> worth Php 45,000 per head</span></div>');
   }
   
@@ -2597,7 +2597,7 @@ async function submitSignedConfirmation() {
 // ==================== INIT ====================
 // ==================== COUNTDOWN TIMER ====================
 function updateCountdown() {
-  const target = new Date('2026-07-18T23:59:59+08:00').getTime();
+  const target = new Date('2026-07-22T23:59:59+08:00').getTime();
   const now = Date.now();
   const diff = Math.max(0, target - now);
   const days = Math.floor(diff / (1000*60*60*24));
