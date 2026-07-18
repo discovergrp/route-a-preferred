@@ -833,7 +833,7 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Playfair Display', serif; }
       </div>
       <div class="form-grid-2">
         <div class="form-group"><label>Number of Travelers</label><select id="travelersCount" onchange="updateTravelers()"><option value="1">1 Person</option><option value="2">2 Persons</option><option value="3">3 Persons</option><option value="4">4 Persons</option><option value="5">5 Persons</option><option value="6">6 Persons</option><option value="7">7 Persons</option><option value="8">8 Persons</option><option value="9">9 Persons</option><option value="10">10 Persons</option><option value="11">11 Persons</option><option value="12">12 Persons</option><option value="13">13 Persons</option><option value="14">14 Persons</option><option value="15">15 Persons</option><option value="16">16 Persons</option><option value="17">17 Persons</option><option value="18">18 Persons</option><option value="19">19 Persons</option><option value="20">20 Persons</option><option value="21">21 Persons</option><option value="22">22 Persons</option><option value="23">23 Persons</option><option value="24">24 Persons</option><option value="25">25 Persons</option><option value="26">26 Persons</option><option value="27">27 Persons</option><option value="28">28 Persons</option><option value="29">29 Persons</option><option value="30">30 Persons</option><option value="31">31 Persons</option><option value="32">32 Persons</option><option value="33">33 Persons</option><option value="34">34 Persons</option><option value="35">35 Persons</option><option value="36">36 Persons</option><option value="37">37 Persons</option><option value="38">38 Persons</option><option value="39">39 Persons</option><option value="40">40 Persons</option><option value="41">41 Persons</option><option value="42">42 Persons</option><option value="43">43 Persons</option><option value="44">44 Persons</option><option value="45">45 Persons</option></select></div>
-        <div class="form-group"><label>Preferred Travel Date *</label><select id="travelDate" required onchange="recalculate()"><option value="2027-02-01">February 1 – 15, 2027</option><option value="2027-03-03" selected>March 3 – 17, 2027</option><option value="2027-05-26">May 26 – June 8, 2027</option><option value="2027-06-08">June 8 – 22, 2027 ★ Buy 5, Get 1 FREE</option><option value="2027-09-15">September 15 – 29, 2027</option></select></div>
+        <div class="form-group"><label>Preferred Travel Date *</label><select id="travelDate" required onchange="recalculate()"><option value="2027-02-01">February 1 – 15, 2027</option><option value="2027-05-26">May 26 – June 9, 2027</option><option value="2027-06-08">June 8 – 22, 2027 ★ Buy 5, Get 1 FREE</option><option value="2027-09-15" selected>September 15 – 29, 2027</option><option value="2027-09-29">September 29 – October 13, 2027</option><option value="2027-11-24">November 24 – December 8, 2027</option></select></div>
         <div class="form-group"><label>Travel Consultant *</label><select id="travelConsultant" required><option value="">Select your Travel Consultant</option><option value="Genesis">Genesis</option><option value="Aila">Aila</option><option value="Angel">Angel</option><option value="Andrea">Andrea</option><option value="Sel">Sel</option></select></div>
       </div>
 
@@ -1020,10 +1020,11 @@ const ITINERARY = [
 // ==================== TRAVEL DATES ====================
 const TRAVEL_DATES = {
   "2027-02-01": { start: "2027-02-01", end: "2027-02-15" },
-  "2027-03-03": { start: "2027-03-03", end: "2027-03-17" },
-  "2027-05-26": { start: "2027-05-26", end: "2027-06-08" },
+  "2027-05-26": { start: "2027-05-26", end: "2027-06-09" },
   "2027-06-08": { start: "2027-06-08", end: "2027-06-22" },
-  "2027-09-15": { start: "2027-09-15", end: "2027-09-29" }
+  "2027-09-15": { start: "2027-09-15", end: "2027-09-29" },
+  "2027-09-29": { start: "2027-09-29", end: "2027-10-13" },
+  "2027-11-24": { start: "2027-11-24", end: "2027-12-08" }
 };
 
 // ==================== STATE ====================
